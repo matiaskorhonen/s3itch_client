@@ -32,6 +32,10 @@ If you haven't defined your [s3itch][s3itch] URL, username, and password in `~/.
 
 CLI arguments will always override any options set in the config file.
 
+If you've configured you `~/.s3itch.yml` correctly, uploading an image is as simple as:
+
+    s3itch kittens.jpeg
+
 ## Contributing
 
 1. Fork it
