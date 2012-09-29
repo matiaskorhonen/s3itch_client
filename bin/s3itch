@@ -3,7 +3,10 @@
 require "s3itch_client/cli"
 
 begin
-  S3itchClient::CLI.upload(ARGV, File.expand_path(ARGV.last))
+  ARGV << "-h" unless ARGV.any?
+  puts S3itchClient::CLI.upload(ARGV, File.expand_path(ARGV.last))
 rescue Exception => e
-  abort "#{e.class}: #{e.message}"
+  abort "#{e.class}: #{e.message}" unless e.kind_of? SystemExit
 end
+
+exit 0

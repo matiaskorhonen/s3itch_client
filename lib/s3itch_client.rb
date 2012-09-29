@@ -11,7 +11,7 @@ module S3itchClient
     options = indifferent_hash(options)
 
     unless options[:url]
-      raise ArgumentError, "A host must be provided"
+      raise ArgumentError, "A URL must be provided"
     end
 
     url = options[:url]
@@ -19,27 +19,35 @@ module S3itchClient
     password = options[:password]
 
     if File.exists?(filepath) && !File.directory?(filepath)
-      filename = File.basename(filepath)
-      extname = File.extname(filename)
-      basename = File.basename(filename, extname)
-      uniq_name = "#{basename}_#{SecureRandom.uuid}#{extname}"
+      uniq_name = build_unique_name(filepath)
 
       uri = URI.parse "#{url}/#{uniq_name}"
 
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Put.new(uri.request_uri)
-      request.basic_auth(username, password)
+
+      if username && password
+        request.basic_auth(username, password)
+      end
+
       request.content_type = 'application/octet-stream'
       response = http.request(request, File.open(filepath).read)
 
       if response["Location"]
-        puts response["Location"]
+        return response["Location"]
       else
         raise StandardError, "Something went wrong [#{response.code}]"
       end
     else
       raise ArgumentError, "No such file - #{filepath}"
     end
+  end
+
+  def self.build_unique_name(filepath)
+    filename = File.basename(filepath)
+    extname = File.extname(filename)
+    basename = File.basename(filename, extname)
+    "#{basename}_#{SecureRandom.uuid}#{extname}"
   end
 
   def self.indifferent_hash(hash)

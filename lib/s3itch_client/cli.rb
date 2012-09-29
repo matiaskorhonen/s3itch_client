@@ -1,4 +1,5 @@
 require "s3itch_client"
+require "s3itch_client/version"
 require "optparse"
 require "yaml"
 
@@ -34,7 +35,7 @@ module S3itchClient
         end
 
         opts.on_tail("--version", "Show version") do
-          puts "S3itchCli version #{S3itchCli::VERSION}"
+          puts "S3itchCli version #{S3itchClient::VERSION}"
           exit
         end
       end.parse!
