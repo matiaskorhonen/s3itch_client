@@ -7,10 +7,10 @@ Gem::Specification.new do |gem|
   gem.name          = "s3itch_client"
   gem.version       = S3itchClient::VERSION
   gem.authors       = ["Matias Korhonen"]
-  gem.email         = ["matias@kiskolabs.com"]
+  gem.email         = ["me@matiaskorhonen.fi"]
   gem.description   = %q{Send files to s3itch from the command line}
   gem.summary       = %q{Upload files to S3 via your own s3itch instance}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/k33l0r/s3itch_client"
 
   gem.add_development_dependency "bundler"
   gem.add_development_dependency "rake"
