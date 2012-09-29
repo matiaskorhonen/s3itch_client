@@ -36,6 +36,12 @@ If you've configured you `~/.s3itch.yml` correctly, uploading an image is as sim
 
     s3itch kittens.jpeg
 
+## Tests [![Build Status](https://secure.travis-ci.org/k33l0r/s3itch_client.png)](http://travis-ci.org/k33l0r/s3itch_client)
+
+S3itch Client is tested with RSpec:
+
+    bundle exec rake spec
+
 ## Contributing
 
 1. Fork it
