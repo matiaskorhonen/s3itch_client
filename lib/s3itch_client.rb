@@ -30,7 +30,7 @@ module S3itchClient
         request.basic_auth(username, password)
       end
 
-      request.content_type = 'application/octet-stream'
+      request.content_type = "application/octet-stream"
       response = http.request(request, File.open(filepath).read)
 
       if response["Location"]
@@ -47,7 +47,11 @@ module S3itchClient
     filename = File.basename(filepath)
     extname = File.extname(filename)
     basename = File.basename(filename, extname)
-    "#{basename}_#{SecureRandom.uuid}#{extname}"
+
+    # Ruby 1.8.7 compatibility
+    uuid = SecureRandom.respond_to?(:uuid) ? SecureRandom.uuid : SecureRandom.hex
+
+    "#{basename}_#{uuid}#{extname}"
   end
 
   def self.indifferent_hash(hash)

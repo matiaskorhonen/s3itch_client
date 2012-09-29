@@ -29,16 +29,16 @@ describe S3itchClient do
   describe ".build_unique_name" do
     it "build a unique name from a file path" do
       name = S3itchClient.build_unique_name(kitten_path)
-      name.should match(/\Akitten_[\da-z-]*\.jpeg\z/)
+      name.should match(/\Akitten_[\da-z-]{32,36}\.jpeg\z/)
     end
   end
 
   describe ".upload" do
     let(:options) do
       {
-        url: "http://s3itch.herokuapp.com",
-        username: "s3itch",
-        password: "secret"
+        :url => "http://s3itch.herokuapp.com",
+        :username => "s3itch",
+        :password => "secret"
       }
     end
 
@@ -48,7 +48,7 @@ describe S3itchClient do
     end
 
     it "raises an exception if the file does not exist" do
-      expect { S3itchClient.upload("does_not_exist", {url: "foo"}) }.to raise_error(ArgumentError)
+      expect { S3itchClient.upload("does_not_exist", { :url => "foo" }) }.to raise_error(ArgumentError)
     end
 
     it "sends files to s3itch" do
