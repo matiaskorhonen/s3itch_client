@@ -4,7 +4,7 @@ Upload files to your [s3itch][s3itch] instance directly from the command line.
 
 Each file is given a unique, unguessable filename based on the original filename. e.g. `kitten.jpeg` will be turned into something like: 
 
-    `kitten_def46901-9dfc-47ad-86b5-c6831d65d9ed.jpeg`.
+    kitten_def46901-9dfc-47ad-86b5-c6831d65d9ed.jpeg
 
 ## Installation & Configuration
 
