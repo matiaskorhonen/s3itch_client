@@ -31,6 +31,11 @@ describe S3itchClient do
       name = S3itchClient.build_unique_name(kitten_path)
       name.should match(/\Akitten_[\da-z-]{32,36}\.jpeg\z/)
     end
+
+    it "URI encodes the file name" do
+      name = S3itchClient.build_unique_name("/tmp/cute kitten.jpeg")
+      name.should match(/\Acute%20kitten_[\da-z-]{32,36}\.jpeg\z/)
+    end
   end
 
   describe ".upload" do

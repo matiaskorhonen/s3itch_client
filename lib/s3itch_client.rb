@@ -51,7 +51,7 @@ module S3itchClient
     # Ruby 1.8.7 compatibility
     uuid = SecureRandom.respond_to?(:uuid) ? SecureRandom.uuid : SecureRandom.hex
 
-    "#{basename}_#{uuid}#{extname}"
+    URI.encode("#{basename}_#{uuid}#{extname}")
   end
 
   def self.indifferent_hash(hash)
