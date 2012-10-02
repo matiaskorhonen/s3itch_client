@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require "spec_helper"
 
 describe S3itchClient do
@@ -46,6 +47,10 @@ describe S3itchClient do
         :password => "secret"
       }
     end
+    let(:http_stub) do
+      stub = stub_request(:put, /s3itch.herokuapp.com/).
+        to_return(:body => "", :status => 201, :headers => { "Location" => "http://s3itch.example.com/kitten.jpeg" })
+    end
 
 
     it "raises an exception if no url is defined" do
@@ -57,10 +62,18 @@ describe S3itchClient do
     end
 
     it "sends files to s3itch" do
-      stub = stub_request(:put, /s3itch.herokuapp.com/).
-        to_return(:body => "", :status => 201, :headers => { "Location" => "http://s3itch.exmaple.com/kitten.jpeg" })
-      S3itchClient.upload(kitten_path, options).should == "http://s3itch.exmaple.com/kitten.jpeg"
-      stub.should have_been_requested
+      http_stub
+      S3itchClient.upload(kitten_path, options).should == "http://s3itch.example.com/kitten.jpeg"
+      http_stub.should have_been_requested
+    end
+
+    it "uses HTTPS if necessary" do
+      http_stub
+      https_options = options
+      https_options[:url] = "https://s3itch.herokuapp.com"
+      S3itchClient.upload(kitten_path, options).should == "http://s3itch.example.com/kitten.jpeg"
+      http_stub.should have_been_requested
+      WebMock.should have_requested(:put, /s3itch.herokuapp.com/).with { |req| req.uri.scheme == "https" }
     end
 
     it "raises an exception if the 'Location' header returned" do

@@ -14,22 +14,27 @@ module S3itchClient
       raise ArgumentError, "A URL must be provided"
     end
 
-    url = options[:url]
+    uri = URI.parse(options[:url])
     username = options[:username]
     password = options[:password]
 
     if File.exists?(filepath) && !File.directory?(filepath)
       uniq_name = build_unique_name(filepath)
 
-      uri = URI.parse "#{url}/#{uniq_name}"
+      uri.path = "/#{uniq_name}"
 
       http = Net::HTTP.new(uri.host, uri.port)
+
+      if uri.scheme == "https"
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+
       request = Net::HTTP::Put.new(uri.request_uri)
 
       if username && password
         request.basic_auth(username, password)
       end
-
       request.content_type = "application/octet-stream"
       response = http.request(request, File.open(filepath).read)
 
