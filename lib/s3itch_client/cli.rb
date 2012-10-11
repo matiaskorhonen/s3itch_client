@@ -29,6 +29,10 @@ module S3itchClient
           options["password"] = password
         end
 
+        opts.on("-e", "--parameterize", "Parameterize the filename") do |parameterize|
+          options["parameterize"] = parameterize
+        end
+
         opts.on_tail("-h", "--help", "Show this message") do
           puts opts
           exit

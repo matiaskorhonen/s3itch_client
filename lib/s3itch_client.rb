@@ -1,5 +1,6 @@
 require "s3itch_client/version"
 
+require "i18n"
 require "net/http"
 require "securerandom"
 require "uri"
@@ -19,7 +20,7 @@ module S3itchClient
     password = options[:password]
 
     if File.exists?(filepath) && !File.directory?(filepath)
-      uniq_name = build_unique_name(filepath)
+      abort uniq_name = build_unique_name(filepath, options[:parameterize])
 
       uri.path = "/#{uniq_name}"
 
@@ -48,7 +49,7 @@ module S3itchClient
     end
   end
 
-  def self.build_unique_name(filepath)
+  def self.build_unique_name(filepath, to_param=false)
     filename = File.basename(filepath)
     extname = File.extname(filename)
     basename = File.basename(filename, extname)
@@ -56,12 +57,32 @@ module S3itchClient
     # Ruby 1.8.7 compatibility
     uuid = SecureRandom.respond_to?(:uuid) ? SecureRandom.uuid : SecureRandom.hex
 
-    URI.encode("#{basename}_#{uuid}#{extname}")
+    uniq_name = "#{basename}_#{uuid}#{extname}"
+    uniq_name = parameterize(uniq_name) if to_param
+
+    URI.encode(uniq_name)
   end
 
   def self.indifferent_hash(hash)
     indifferent = Hash.new { |h,k| h[k.to_s] if Symbol === k }
     indifferent.merge(hash)
+  end
+
+  def self.parameterize(string)
+    parameterized_string = I18n.transliterate(string, :replacement => "-", :locale => :en)
+
+    # Turn unwanted chars into the separator
+    parameterized_string.gsub!(/[^a-z0-9\-_]+/i, "-")
+
+    re_sep = Regexp.escape("-")
+
+    # No more than one of the separator in a row.
+    parameterized_string.gsub!(/#{re_sep}{2,}/, "-")
+
+    # Remove leading/trailing separator.
+    parameterized_string.gsub!(/^#{re_sep}|#{re_sep}$/i, '')
+
+    parameterized_string
   end
 
 end

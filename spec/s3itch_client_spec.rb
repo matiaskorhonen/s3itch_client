@@ -37,6 +37,29 @@ describe S3itchClient do
       name = S3itchClient.build_unique_name("/tmp/cute kitten.jpeg")
       name.should match(/\Acute%20kitten_[\da-z-]{32,36}\.jpeg\z/)
     end
+
+    it "parameterizes the name if required to" do
+      S3itchClient.should_receive(:parameterize).with(/\Akitten/).and_return do |argument|
+        argument
+      end
+      S3itchClient.build_unique_name("kitten", true)
+    end
+  end
+
+  describe ".parameterize" do
+    it "transliterates non-ASCII characters" do
+      utf8 = "Ä-Ö-Ü-Å-Æ-and-Ø"
+      ascii = S3itchClient.parameterize(utf8)
+      ascii.should == "A-O-U-A-AE-and-O"
+    end
+
+    it "converts spaces to hyphens" do
+      S3itchClient.parameterize("This and that").should == "This-and-that"
+    end
+
+    it "removes 'unwanted' characters" do
+      S3itchClient.parameterize("Unwanted?!€Characters").should == "Unwanted-Characters"
+    end
   end
 
   describe ".upload" do

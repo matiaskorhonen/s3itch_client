@@ -12,6 +12,8 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Upload files to S3 via your own s3itch instance}
   gem.homepage      = "https://github.com/k33l0r/s3itch_client"
 
+  gem.add_dependency "i18n", ">= 0.6.1"
+
   gem.add_development_dependency "bundler"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec", "~> 2.11.0"

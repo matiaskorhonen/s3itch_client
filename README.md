@@ -18,6 +18,7 @@ For your own convenience, create the `~/.s3itch.yml` file with the following con
     url: http://YOUR-S3ITCH-INSTANCE.herokuapp.com
     username: S3ITCH_USERNAME
     password: YOUR_PASSWORD
+    parameterize: true
 
 ## Usage
 
