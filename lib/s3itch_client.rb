@@ -20,7 +20,7 @@ module S3itchClient
     password = options[:password]
 
     if File.exists?(filepath) && !File.directory?(filepath)
-      abort uniq_name = build_unique_name(filepath, options[:parameterize])
+      uniq_name = build_unique_name(filepath, options[:parameterize])
 
       uri.path = "/#{uniq_name}"
 
