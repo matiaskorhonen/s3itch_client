@@ -57,8 +57,9 @@ module S3itchClient
     # Ruby 1.8.7 compatibility
     uuid = SecureRandom.respond_to?(:uuid) ? SecureRandom.uuid : SecureRandom.hex
 
-    uniq_name = "#{basename}_#{uuid}#{extname}"
+    uniq_name = "#{basename}_#{uuid}"
     uniq_name = parameterize(uniq_name) if to_param
+    uniq_name << extname
 
     URI.encode(uniq_name)
   end

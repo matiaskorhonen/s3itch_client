@@ -44,6 +44,14 @@ describe S3itchClient do
       end
       S3itchClient.build_unique_name("kitten", true)
     end
+
+    it "should preserve the file extension" do
+      name = S3itchClient.build_unique_name(kitten_path)
+      name.should match(/\.jpeg\z/)
+
+      name = S3itchClient.build_unique_name(kitten_path, true)
+      name.should match(/\.jpeg\z/)
+    end
   end
 
   describe ".parameterize" do
