@@ -33,6 +33,12 @@ describe S3itchClient do
       name.should match(/\Akitten_[\da-z-]{32,36}\.jpeg\z/)
     end
 
+    it "uses a timestamp instead of a UUID if required to" do
+      name = S3itchClient.build_unique_name(kitten_path, false, true)
+      name.should match(/\Akitten_[\da-z]+\.jpeg\z/)
+      name.should_not match(/\Akitten_[\da-z-]{32,36}\.jpeg\z/)
+    end
+
     it "URI encodes the file name" do
       name = S3itchClient.build_unique_name("/tmp/cute kitten.jpeg")
       name.should match(/\Acute%20kitten_[\da-z-]{32,36}\.jpeg\z/)

@@ -20,7 +20,7 @@ module S3itchClient
     password = options[:password]
 
     if File.exists?(filepath) && !File.directory?(filepath)
-      uniq_name = build_unique_name(filepath, options[:parameterize])
+      uniq_name = build_unique_name(filepath, options[:parameterize], options[:use_timestamp_suffix])
 
       uri.path = "/#{uniq_name}"
 
@@ -49,15 +49,19 @@ module S3itchClient
     end
   end
 
-  def self.build_unique_name(filepath, to_param=false)
+  def self.build_unique_name(filepath, to_param=false, use_timestamp_suffix=false)
     filename = File.basename(filepath)
     extname = File.extname(filename)
     basename = File.basename(filename, extname)
 
-    # Ruby 1.8.7 compatibility
-    uuid = SecureRandom.respond_to?(:uuid) ? SecureRandom.uuid : SecureRandom.hex
+    suffix = if use_timestamp_suffix
+      Time.now.to_i.to_s(36)
+    else
+      # Ruby 1.8.7 compatibility
+      SecureRandom.respond_to?(:uuid) ? SecureRandom.uuid : SecureRandom.hex
+    end
 
-    uniq_name = "#{basename}_#{uuid}"
+    uniq_name = "#{basename}_#{suffix}"
     uniq_name = parameterize(uniq_name) if to_param
     uniq_name << extname
 
