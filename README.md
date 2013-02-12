@@ -19,6 +19,7 @@ For your own convenience, create the `~/.s3itch.yml` file with the following con
     username: S3ITCH_USERNAME
     password: YOUR_PASSWORD
     parameterize: true
+    use_timestamp_suffix: true
 
 ## Usage
 

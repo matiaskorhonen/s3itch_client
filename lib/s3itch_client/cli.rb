@@ -33,6 +33,10 @@ module S3itchClient
           options["parameterize"] = parameterize
         end
 
+        opts.on("-t", "--[no-]timestamp", "Use a timestamp suffix instead of a UUID") do |parameterize|
+          options["use_timestamp_suffix"] = parameterize
+        end
+
         opts.on_tail("-h", "--help", "Show this message") do
           puts opts
           exit

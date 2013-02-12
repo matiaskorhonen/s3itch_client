@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.3.1
+
+* Adds support for timestamp suffixes (instead of UUIDs)
+
+## 1.2.0
+
+* Fixes an issue with parameterization
+
 ## 1.2.0
 
 * Adds filename parameterization support
