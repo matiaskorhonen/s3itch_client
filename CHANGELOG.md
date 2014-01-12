@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.2
+
+* Fixes a warning in newer versions of I18n
+
 ## 1.3.1
 
 * Adds support for timestamp suffixes (instead of UUIDs)

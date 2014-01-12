@@ -74,6 +74,9 @@ module S3itchClient
   end
 
   def self.parameterize(string)
+    if I18n.respond_to? :enforce_available_locales=
+      I18n.enforce_available_locales = false # Disables a warning
+    end
     parameterized_string = I18n.transliterate(string, :replacement => "-", :locale => :en)
 
     # Turn unwanted chars into the separator
